@@ -1,299 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tausug Dictionary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(to right, #3498db, #2c3e50);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .search-box {
-            display: flex;
-            margin-bottom: 25px;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            background: #f5f7fa;
-            font-size: 16px;
-            outline: none;
-        }
-        
-        .search-btn {
-            background: #2c3e50;
-            color: white;
-            border: none;
-            padding: 0 25px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .search-btn:hover {
-            background: #3498db;
-        }
-        
-        .divider {
-            height: 1px;
-            background: #e0e6ed;
-            margin: 25px 0;
-        }
-        
-        .word-list {
-            background: #f8fafd;
-            border-radius: 12px;
-            padding: 20px;
-        }
-        
-        .word-list h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .word-list h2 i {
-            margin-right: 10px;
-            color: #3498db;
-        }
-        
-        .word-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eef2f7;
-        }
-        
-        .word-item:last-child {
-            border-bottom: none;
-        }
-        
-        .word {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .meaning {
-            color: #7f8c8d;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: #f8fafd;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        
-        .search-results {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f4fc;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .no-results {
-            color: #e74c3c;
-            text-align: center;
-            padding: 10px;
-            font-style: italic;
-        }
-        
-        @media (max-width: 600px) {
-            .header {
-                padding: 20px 15px;
-            }
-            
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .search-input {
-                padding: 12px 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translation Word Splitter</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Tausug Dictionary</h1>
-            <p>Your comprehensive reference for Tausug to English translations</p>
+  <div class="container">
+    <header>
+      <h1>Translation Word Splitter</h1>
+      <div class="subtitle">Split words while preserving translation format</div>
+    </header>
+
+    <div class="app-content">
+      <div class="input-section">
+        <div class="rule-highlight">
+          <div class="rule-text">RULE: Each word maintains its "word = translation" format after splitting</div>
+          <p>Paste your translated words in the format: <strong>word = translation</strong></p>
         </div>
-        
-        <div class="content">
-            <div class="search-box">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search for a word...">
-                <button class="search-btn" id="searchBtn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            
-            <div id="searchResults"></div>
-            
-            <div class="divider"></div>
-            
-            <div class="word-list">
-                <h2><i class="fas fa-list"></i> Word List</h2>
-                <div id="wordListContainer">
-                    <!-- Word list will be populated by JavaScript -->
-                </div>
-            </div>
+
+        <textarea id="inputText" placeholder="Paste your translated words here..."></textarea>
+
+        <div class="buttons">
+          <button id="splitBtn"><i class="fas fa-cogs"></i> Split Words</button>
+          <button id="resetBtn" class="clear-btn"><i class="fas fa-redo"></i> Reset</button>
+          <button id="loadJsonBtn"><i class="fas fa-database"></i> Load JSON</button>
         </div>
-        
-        <div class="footer">
-            <p>© 2023 Tausug Dictionary | Preserving the Tausug Language</p>
+      </div>
+
+      <div class="instructions">
+        <p><strong>How to use:</strong></p>
+        <ol>
+          <li>Paste or load your words in <code>word = translation</code> format.</li>
+          <li>Click "Split Words" to create boxes.</li>
+          <li>Export, copy, or print your results.</li>
+        </ol>
+      </div>
+
+      <div class="stats-section">
+        <h3>Translation Statistics</h3>
+        <div id="totalDisplay" class="total-display">Total Words: 0</div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value" id="wordCount">0</div>
+            <div class="stat-label">Words</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="translationCount">0</div>
+            <div class="stat-label">Translations</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="lineCount">0</div>
+            <div class="stat-label">Lines</div>
+          </div>
         </div>
+      </div>
+
+      <div class="output-section">
+        <h2 class="output-title">Split Words</h2>
+        <div id="wordsContainer" class="words-container"></div>
+      </div>
+
+      <div class="save-section">
+        <h3>Save Your Work</h3>
+        <div class="save-options">
+          <button id="saveJsonBtn" class="save-btn"><i class="fas fa-file-export"></i> Export JSON</button>
+          <button id="copyJsonBtn" class="save-btn"><i class="fas fa-copy"></i> Copy JSON</button>
+          <button id="printBtn" class="save-btn"><i class="fas fa-print"></i> Print</button>
+        </div>
+      </div>
     </div>
 
-    <script>
-        // Dictionary data
-        const dictionary = [
-            { word: 'maunu-unu', meaning: 'What' },
-            { word: 'maanu', meaning: 'Why' },
-            { word: 'kiyasa', meaning: 'How' },
-            { word: 'hain', meaning: 'Where' },
-            { word: 'siinu', meaning: 'Who' },
-            { word: 'kunsu', meaning: 'When' },
-            { word: 'iyan', meaning: 'This' },
-            { word: 'itun', meaning: 'That' },
-            { word: 'kame', meaning: 'We' },
-            { word: 'kami', meaning: 'Us' },
-            { word: 'sila', meaning: 'They' },
-            { word: 'kaw', meaning: 'You' },
-            { word: 'aku', meaning: 'I' },
-            { word: 'kitaniyu', meaning: 'Our' },
-            { word: 'marayaw', meaning: 'Good' },
-            { word: 'maling', meaning: 'Bad' },
-            { word: 'dagan', meaning: 'Run' },
-            { word: 'hulum', meaning: 'Sit' },
-            { word: 'tindug', meaning: 'Stand' },
-            { word: 'kaun', meaning: 'Eat' }
-        ];
+    <footer>
+      <p class="footer-text">Translation Word Splitter &copy; 2025</p>
+    </footer>
+  </div>
 
-        // DOM elements
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const searchResults = document.getElementById('searchResults');
-        const wordListContainer = document.getElementById('wordListContainer');
+  <div class="notification" id="notification">Operation completed successfully!</div>
 
-        // Display word list
-        function displayWordList(words) {
-            wordListContainer.innerHTML = '';
-            
-            words.forEach(item => {
-                const wordItem = document.createElement('div');
-                wordItem.className = 'word-item';
-                wordItem.innerHTML = `
-                    <span class="word">${item.word}</span>
-                    <span class="meaning">${item.meaning}</span>
-                `;
-                wordListContainer.appendChild(wordItem);
-            });
-        }
-
-        // Search function
-        function searchDictionary() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                searchResults.style.display = 'none';
-                displayWordList(dictionary);
-                return;
-            }
-            
-            const results = dictionary.filter(item => 
-                item.word.toLowerCase().includes(searchTerm) || 
-                item.meaning.toLowerCase().includes(searchTerm)
-            );
-            
-            if (results.length > 0) {
-                searchResults.innerHTML = `
-                    <h3>Search Results for "${searchTerm}":</h3>
-                    ${results.map(item => `
-                        <div class="word-item">
-                            <span class="word">${item.word}</span>
-                            <span class="meaning">${item.meaning}</span>
-                        </div>
-                    `).join('')}
-                `;
-                searchResults.style.display = 'block';
-                
-                // Also update the word list with search results
-                displayWordList(results);
-            } else {
-                searchResults.innerHTML = `<div class="no-results">No results found for "${searchTerm}"</div>`;
-                searchResults.style.display = 'block';
-                wordListContainer.innerHTML = '';
-            }
-        }
-
-        // Event listeners
-        searchBtn.addEventListener('click', searchDictionary);
-        searchInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                searchDictionary();
-            }
-        });
-
-        // Initial display of all words
-        displayWordList(dictionary);
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
